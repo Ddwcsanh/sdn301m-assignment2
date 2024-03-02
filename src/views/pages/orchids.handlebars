@@ -1,0 +1,42 @@
+<section class='bg-gray-200 py-20 min-h-[calc(100vh-64px)]'>
+  <div class='container mx-auto'>
+    <div class='flex flex-wrap -mx-4'>
+      {{#each orchids}}
+        <div class='px-4 md:w-1/2 xl:w-1/3 mb-10 rounded-lg'>
+          <div class='card card-compact relative overflow-hidden bg-white shadow-xl hover:shadow-2xl duration-300'>
+            <img src={{this.image}} alt='image' class='w-full absolute top-0 left-0 aspect-[4/3]' />
+            <div class='skeleton w-full aspect-[4/3] rounded-none'></div>
+            <div class='card-body w-full p-4'>
+              <h3
+                class='text-black hover:text-primary mb-4 block text-xl font-semibold sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]'
+              >
+                {{this.name}}
+              </h3>
+              <p class='leading-relaxed text-xl font-bold mb-7'>
+                ${{this.price}}
+              </p>
+              <div class='card-actions justify-end'>
+                <a href='/orchid/id/{{this._id}}' class='btn btn-primary text-white'>Detail</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <div class='join w-full flex justify-center mt-12'>
+      {{#if previous}}
+        <a href='/orchid/page/{{previous}}' class='join-item btn'>«</a>
+      {{else}}
+        <a class='join-item btn btn-disabled'>«</a>
+      {{/if}}
+
+      <a class='join-item btn'>Page {{current}}/{{pages}}</a>
+
+      {{#if next}}
+        <a href='/orchid/page/{{next}}' class='join-item btn'>»</a>
+      {{else}}
+        <a class='join-item btn btn-disabled'>»</a>
+      {{/if}}
+    </div>
+  </div>
+</section>

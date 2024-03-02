@@ -1,0 +1,47 @@
+<section class='bg-white min-h-[calc(100vh-365px)] py-24'>
+  <div class='container mx-auto px-4 sm:px-6 lg:px-8'>
+    <div class='flex flex-col md:flex-row -mx-4'>
+      <div class='md:flex-1 px-4'>
+        <div class='w-full aspect-[4/3] rounded-lg bg-gray-300 relative'>
+          <img class='w-full aspect-[4/3] absolute top-0 left-0 rounded-lg' src={{image}} alt='Product Image' />
+          <div class='skeleton w-full aspect-[4/3] rounded-lg'></div>
+        </div>
+      </div>
+      <div class='md:flex-1 px-4 relative'>
+        <h2 class='text-2xl font-bold text-gray-800 mb-2'>{{name}}</h2>
+        <p class='text-gray-600 text-sm mb-4'>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ante justo. Integer euismod libero id mauris
+          malesuada tincidunt. Vivamus commodo nulla ut lorem rhoncus aliquet. Duis dapibus augue vel ipsum pretium, et
+          venenatis sem blandit. Quisque ut erat vitae nisi ultrices placerat non eget velit. Integer ornare mi sed
+          ipsum lacinia, non sagittis mauris blandit. Morbi fermentum libero vel nisl suscipit, nec tincidunt mi
+          consectetur.
+        </p>
+        <div class='flex mb-4'>
+          <div class='mr-4'>
+            <span class='font-bold text-gray-700'>Original:</span>
+            <span class='text-gray-600'>{{original}}</span>
+          </div>
+          <div>
+            <span class='font-bold text-gray-700'>Natural:</span>
+            <span class='text-gray-600'>{{#if isNatural}}Yes{{else}}No{{/if}}</span>
+          </div>
+        </div>
+        <div class='mb-4'>
+          <span class='font-bold text-gray-700'>Colors:</span>
+          <div class='flex items-center mt-2'>
+            {{#each color}}
+              <button
+                style='background-color: {{this}};'
+                class='btn btn-circle border-none scale-75 cursor-default outline outline-1 outline-offset-0 outline-black'
+              ></button>
+            {{/each}}
+          </div>
+        </div>
+        <div class='absolute bottom-0 left-4'>
+          <span class='font-bold text-2xl text-gray-700'>Price:</span>
+          <span class='text-gray-600 text-4xl'>${{price}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

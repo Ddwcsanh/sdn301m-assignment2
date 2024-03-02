@@ -1,0 +1,275 @@
+<section class='bg-white py-10 min-h-[calc(100vh-64px)] relative'>
+
+  <!-- ====== Modal Create Start -->
+  <section>
+    <!-- The button to open modal -->
+    <div class='container pb-10 mx-auto'>
+      <label for='create_modal' class='btn btn-primary text-white'>Create new orchid</label>
+    </div>
+    <input type='checkbox' id='create_modal' class='modal-toggle' />
+    <div class='modal' role='dialog'>
+      <div class='modal-box'>
+        <h3 class='font-bold text-2xl mb-6'>Create new Orchid</h3>
+        <form id='create' method='post' action='/orchid'>
+          <label class='w-full'>
+            <div class='mb-6'>
+              <input type='text' placeholder='Name' name='name' class='input input-bordered w-full' required />
+            </div>
+            <div class='mb-6'>
+              <input type='url' placeholder='Image URL' name='image' class='input input-bordered w-full' required />
+            </div>
+            <div class='mb-6'>
+              <input
+                type='number'
+                step='0.01'
+                id='totalAmt'
+                placeholder='Price'
+                name='price'
+                class='input input-bordered w-full'
+                required
+              />
+            </div>
+            <div class='mb-6'>
+              <input type='text' placeholder='Origin' name='original' class='input input-bordered w-full' required />
+            </div>
+            <div class='mb-6 flex items-center px-3'>
+              Is natural? &nbsp;
+              <input type='checkbox' checked='checked' class='checkbox checkbox-primary' name='isNatural' />
+            </div>
+            <div>
+              <input type='text' placeholder='Color' name='color' class='input input-bordered w-full' required />
+            </div>
+          </label>
+          <!-- Close when click close button -->
+          <div class='modal-action'>
+            <button type='submit' class='btn btn-primary text-white' id='create'>Create</button>
+            <button type='reset' class='btn p-0'>
+              <label for='create_modal' class='w-full h-full px-4 flex items-center cursor-pointer'>Cancel</label>
+            </button>
+          </div>
+        </form>
+
+      </div>
+      <!-- Close when click outside -->
+      <label class='modal-backdrop' for='create_modal'>Close</label>
+    </div>
+  </section>
+  <!-- ====== Modal Create End -->
+
+  <!-- ====== Table Start -->
+  <section>
+    <div>
+      <div class='container pb-10 mx-auto'>
+        <div class='overflow-x-auto rounded-lg outline outline-1 outline-gray-400'>
+          <table class='table table-zebra'>
+            <!-- head -->
+            <thead>
+              <tr class='h-16'>
+                <th class='bg-primary text-white py-3 text-base'>Name</th>
+                <th class='bg-primary text-white py-3 text-base max-w-52 min-w-52 w-52'>Image</th>
+                <th class='bg-primary text-white py-3 text-base text-center max-w-20 min-w-20 w-20'>Price</th>
+                <th class='bg-primary text-white py-3 text-base max-w-52 min-w-52 w-52'>Origin</th>
+                <th class='bg-primary text-white py-3 text-base text-center min-w-28 max-w-28 w-28'>Is natural</th>
+                <th class='bg-primary text-white py-3 text-base text-center max-w-40 min-w-40 w-40'>Color</th>
+                <th class='bg-primary text-white py-3 text-base max-w-52 min-w-52 w-52'></th>
+              </tr>
+            </thead>
+            <tbody x-init id='orchids'>
+              {{#each orchids}}
+                <tr class='hover my-2'>
+                  <td>{{this.name}}</td>
+                  <td>
+                    <div class='relative'>
+                      <img
+                        class='w-full aspect-[4/3] absolute top-0 left-0 rounded-lg'
+                        src={{this.image}}
+                        alt='Product Image'
+                      />
+                      <div class='skeleton w-full aspect-[4/3] rounded-lg'></div>
+                    </div>
+                  </td>
+                  <td class='text-center'>${{this.price}}</td>
+                  <td>{{this.original}}</td>
+                  <td>
+                    <div class='flex items-center justify-center'>
+                      {{#if this.isNatural}}
+                        <input
+                          type='checkbox'
+                          checked='checked'
+                          disabled
+                          class='checkbox checkbox-primary disabled:opacity-100 checked:bg-primary disabled:border-primary disabled:border-2 disabled:bg-transparent'
+                        />
+                      {{else}}
+                        <input
+                          type='checkbox'
+                          disabled
+                          class='checkbox checkbox-primary disabled:opacity-100 checked:bg-primary disabled:border-primary disabled:border-2 disabled:bg-transparent'
+                        />
+                      {{/if}}
+                    </div>
+                  </td>
+                  <td>
+                    <div class='flex items-center justify-center flex-wrap'>
+                      {{#each this.color}}
+                        <button
+                          style='background-color: {{this}};'
+                          class='btn btn-circle border-none scale-75 cursor-default outline outline-1 outline-offset-0 outline-black'
+                        ></button>
+                      {{/each}}
+                    </div>
+                  </td>
+                  <td>
+
+                    <!-- The button to open Modal -->
+                    <div class='flex flex-row justify-between'>
+                      <label for='delete_modal{{this._id}}' class='btn btn-error text-white'>Delete</label>
+                      <label for='update_modal{{this._id}}' class='btn btn-success text-white'>Update</label>
+                    </div>
+
+                    <input type='checkbox' id='update_modal{{this._id}}' class='modal-toggle' />
+
+                    <!--  Update modal Start -->
+                    <div class='modal' role='dialog'>
+                      <div class='modal-box'>
+                        <h3 class='font-bold text-2xl mb-6'>Update orchid</h3>
+                        <form id='orchid' method='put' x-target action='/orchid/id/{{this._id}}'>
+                          <label class='w-full'>
+                            <div class='mb-6'>
+                              <input
+                                type='text'
+                                placeholder='Name'
+                                name='name'
+                                class='input input-bordered w-full'
+                                value='{{this.name}}'
+                                required
+                              />
+                            </div>
+                            <div class='mb-6'>
+                              <input
+                                type='url'
+                                placeholder='Image URL'
+                                name='image'
+                                class='input input-bordered w-full'
+                                value='{{this.image}}'
+                                required
+                              />
+                            </div>
+                            <div class='mb-6'>
+                              <input
+                                type='number'
+                                step='0.01'
+                                id='totalAmt'
+                                placeholder='Price'
+                                name='price'
+                                class='input input-bordered w-full'
+                                value='{{this.price}}'
+                                required
+                              />
+                            </div>
+                            <div class='mb-6'>
+                              <input
+                                type='text'
+                                placeholder='Origin'
+                                name='original'
+                                class='input input-bordered w-full'
+                                value='{{this.original}}'
+                                required
+                              />
+                            </div>
+                            <div class='mb-6 flex items-center px-3'>
+                              Is natural? &nbsp;
+                              {{#if this.isNatural}}
+                                <input
+                                  type='checkbox'
+                                  checked='checked'
+                                  class='checkbox checkbox-primary'
+                                  name='isNatural'
+                                />
+                              {{else}}
+                                <input type='checkbox' class='checkbox checkbox-primary' name='isNatural' />
+                              {{/if}}
+                            </div>
+                            <div>
+                              <input
+                                type='text'
+                                placeholder='Color'
+                                name='color'
+                                class='input input-bordered w-full'
+                                value='{{this.color}}'
+                                required
+                              />
+                            </div>
+                          </label>
+                          <!-- Close when click close button -->
+                          <div class='modal-action'>
+                            <button type='submit' @click.submit='location.reload()' class='btn btn-primary text-white'>
+                              Save
+                            </button>
+                            <button type='reset' class='btn p-0'>
+                              <label
+                                for='update_modal{{this._id}}'
+                                class='w-full h-full px-4 flex items-center cursor-pointer'
+                              >Cancel</label>
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- Close when click outside -->
+                      <label class='modal-backdrop' for='update_modal{{this._id}}'>Close</label>
+                    </div>
+                    <!--  Update modal End -->
+
+                    <input type='checkbox' id='delete_modal{{this._id}}' class='modal-toggle' />
+
+                    <!--  Delete modal Start -->
+                    <div class='modal' role='dialog'>
+                      <div class='modal-box'>
+                        <h3 class='font-bold text-2xl mb-6'>Are you sure you want to delete {{this.name}}?</h3>
+                        <form id='orchid' method='delete' x-target action='/orchid/id/{{this._id}}'>
+                          <!-- Close when click close button -->
+                          <div class='modal-action'>
+                            <button type='submit' @click.submit='location.reload()' class='btn btn-error text-white'>
+                              Delete
+                            </button>
+                            <button type='reset' class='btn p-0'>
+                              <label
+                                for='delete_modal{{this._id}}'
+                                class='w-full h-full px-4 flex items-center cursor-pointer'
+                              >Cancel</label>
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- Close when click outside -->
+                      <label class='modal-backdrop' for='delete_modal{{this._id}}'>Close</label>
+                    </div>
+                    <!--  Delete modal End -->
+
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+  <!-- ====== Table End -->
+  <div class='join absolute bottom-24 left-1/2 -translate-x-1/2'>
+    {{#if previous}}
+      <a href='/orchid/manage/{{previous}}' class='join-item btn'>«</a>
+    {{else}}
+      <a class='join-item btn btn-disabled'>«</a>
+    {{/if}}
+
+    <a class='join-item btn'>Page {{current}}/{{pages}}</a>
+
+    {{#if next}}
+      <a href='/orchid/manage/{{next}}' class='join-item btn'>»</a>
+    {{else}}
+      <a class='join-item btn btn-disabled'>»</a>
+    {{/if}}
+  </div>
+</section>
